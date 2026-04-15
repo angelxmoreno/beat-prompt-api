@@ -7,8 +7,9 @@ Expose the primary API endpoint for the MVP. The `POST /optimize` route will rec
 - [ ] Create `Api\PromptController` (or similar) to handle the route.
 - [ ] Define the `POST /optimize` route in `config/routes.php`.
 - [ ] Create a `Prompt\PromptPipeline` service/facade to orchestrate `Canonicalizer`, `StyleExtractor`, `PromptSynthesizer`, and `PolicyCleaner`.
-- [ ] Implement request validation (e.g., requiring `text` string, optional `instrumentalOnly` boolean).
+- [ ] Implement request validation (e.g., requiring `text` string, optional `instrumentalOnly` boolean, optional explicit BPM input if supported later).
 - [ ] Return the required JSON response structure containing: `input`, `normalized`, `canonicalKey`, `style` (attributes), and the final `prompt`.
+- [ ] Ensure the response shape uses a single `tempoBpm` scalar in `style` rather than a BPM range.
 
 ## Example Request
 ```json
@@ -24,7 +25,10 @@ Expose the primary API endpoint for the MVP. The `POST /optimize` route will rec
   "input": "...",
   "normalized": "...",
   "canonicalKey": "...",
-  "style": { ... },
+  "style": {
+    "tempoBpm": 94,
+    "tempoSource": "inferred"
+  },
   "prompt": "..."
 }
 ```

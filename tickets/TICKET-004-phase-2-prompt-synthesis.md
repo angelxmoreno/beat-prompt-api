@@ -5,9 +5,10 @@ Implement Phase 2 of the prompt pipeline: Prompt Synthesis. This phase converts 
 
 ## Tasks
 - [ ] Create a `Prompt\PromptSynthesizer` service.
-- [ ] Develop prompts/templates to instruct a fast, rewrite-oriented LLM to compose a natural language instrumental prompt from the structured JSON attributes.
-- [ ] Ensure the generated prompt flows naturally and highlights the requested energy, mood, and instrumentation.
+- [ ] Develop prompts/templates to instruct a fast, rewrite-oriented LLM to compose a natural language instrumental prompt from the structured JSON attributes, including a single `tempoBpm` value when present.
+- [ ] Ensure the generated prompt flows naturally and highlights the requested energy, mood, instrumentation, and exact BPM when the backend has one.
 - [ ] Cache the synthesized prompt where appropriate.
 
 ## Technical Notes
 - Since structured attributes are already available, a cheaper/faster model can be used for this text generation step.
+- Tempo should be treated as a concrete scalar here, not a range. If the upstream profile only has an inferred BPM, the synthesis prompt should still render a single BPM value in the text output.
