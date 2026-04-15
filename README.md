@@ -1,67 +1,85 @@
-# CakePHP Project Template
+# BeatPrompt API
 
-This repository has been stripped back from the original Lopusboard domain so it can serve as a cleaner starting point for future CakePHP projects.
+BeatPrompt is a web application that translates vague, artist-referential music requests into structured, sanitized prompts that preserve the intended musical qualities without naming or imitating real artists. 
 
-## What Remains
+This repository contains the backend API for the MVP, built with **CakePHP** and **PHP**. It orchestrates a multi-phase pipeline using large language models (LLMs) to extract musical style attributes and synthesize policy-safe prompts for tools like Lyria.
 
-- CakePHP 5 application skeleton
-- `IdentityBridge` plugin integration for bearer-token auth
-- A minimal local `users` model used by the identity resolver
-- A single authenticated API endpoint at `GET /api/identity/me`
-- Standard CakePHP pages, errors, migrations, and test tooling
+## Core Tech Stack
 
-## What Was Removed
+- **CakePHP 5** - Primary application backend and routing
+- **cognesy/instructor-php** - Guarantee structured, typed data extraction from LLMs
+- **File/Redis Caching** - Environment-driven caching for canonical requests, artist profiles, and final prompts
 
-- Lopusboard project, issue, wiki, comment, attachment, status, and department MVC
-- Domain-specific policies, behaviors, enums, fixtures, seeds, and tests
-- Lopusboard REST resources and their routing
+## Pipeline Overview
+
+The API processes requests in four phases:
+
+1. **Phase 0 — Canonicalization:** Normalizes user input and resolves aliases to build a deterministic canonical request key.
+2. **Phase 1 — Style Extraction:** Infers musical attributes (genre, mood, energy, tempo, instruments) using a high-quality LLM via `instructor-php`.
+3. **Phase 2 — Prompt Synthesis:** Converts the extracted style attributes into a polished, Lyria-safe prompt using a rewrite-oriented model.
+4. **Phase 3 — Policy Cleaner:** Ensures the final prompt contains no real artist names, song titles, or direct references.
 
 ## Getting Started
 
-1. Install dependencies:
+1. **Install dependencies:**
 
 ```bash
 composer install
 ```
 
-2. Create local config:
+2. **Create local config:**
 
 ```bash
 cp config/app_local.example.php config/app_local.php
 ```
 
-3. Create a local environment file:
+3. **Create a local environment file:**
 
 ```bash
 cp sample.env .env
 ```
 
-Update the values in `.env` for your project. At minimum, set `SECURITY_SALT`
-and `DATABASE_URL`. Appwrite variables are only needed if you plan to keep
-`IdentityBridge` with Appwrite.
+Update the values in `.env` for your local setup. At minimum, ensure `SECURITY_SALT` is set. Configure your `CACHE_URL` (e.g., `file:///tmp/cache/` for local dev) and your LLM provider keys (e.g., `OPENAI_API_KEY`) as they are added to the project.
 
-4. Run the base migration:
-
-```bash
-bin/cake migrations migrate
-```
-
-5. Start the app:
+4. **Start the local development server:**
 
 ```bash
 bin/cake server -p 8080
 ```
 
-## Next Template Steps
+## API Surface
 
-- Rename the app and package metadata for your new project
-- Replace the `users` table and `AppUserResolver` if you are not using Appwrite
-- Bake new domain models, controllers, templates, and migrations for the new app
-- Remove `Crud` and `IdentityBridge` too if the next project does not need them
+For the MVP, the primary endpoint is:
+
+`POST /api/optimize`
+
+**Request:**
+```json
+{
+  "text": "Joyner Lucas type beat",
+  "instrumentalOnly": true
+}
+```
+
+**Response:**
+```json
+{
+  "input": "Joyner Lucas type beat",
+  "normalized": "joyner lucas type beat",
+  "canonicalKey": "kind:artist_style_prompt|artists:joyner lucas|target:beat|modifiers:",
+  "style": {
+    "genre": "lyrical hip-hop / modern boom bap",
+    "mood": ["dark", "intense", "cinematic"],
+    "energy": "high",
+    "tempo": "92-98 BPM",
+    "instruments": ["piano", "strings", "hard drums", "bass"]
+  },
+  "prompt": "Dark cinematic lyrical hip-hop instrumental with hard boom-bap drums, tense piano melodies, dramatic strings, punchy bass, and focused storytelling energy. 94 BPM. No vocals."
+}
+```
 
 ## Useful Commands
 
-- `composer test`
-- `composer stan`
-- `composer cs-check`
-- `bin/cake bake all <Table>`
+- `composer test` - Run the test suite
+- `composer stan` - Run PHPStan static analysis
+- `composer cs-check` - Run CodeSniffer
