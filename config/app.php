@@ -1,13 +1,10 @@
 <?php
 
-use App\Auth\AppUserResolver;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
-use IdentityBridge\Enum\AuthenticationMode;
-use IdentityBridge\Provider\AppwriteProvider;
 use function Cake\Core\env;
 
 return [
@@ -465,18 +462,5 @@ return [
     'TestSuite' => [
         'errorLevel' => null,
         'fixtureStrategy' => null,
-    ],
-    'IdentityBridge' => [
-        'provider' => AppwriteProvider::class,
-        'providerConfig' => [
-            'endpoint' => env('APPWRITE_ENDPOINT'),
-            'projectId' => env('APPWRITE_PROJECT_ID'),
-            'isDev' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
-        ],
-        'resolver' => AppUserResolver::class,
-        'mode' => AuthenticationMode::ProtectedByDefault->value,
-        'overrides' => [
-            'Pages/*' => false,
-        ],
     ],
 ];
