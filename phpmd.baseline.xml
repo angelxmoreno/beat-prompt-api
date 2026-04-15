@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<phpmd-baseline>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="plugins/IdentityBridge/src/IdentityBridgePlugin.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="plugins/IdentityBridge/src/Middleware/IdentityBridgeMiddleware.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="plugins/IdentityBridge/src/Middleware/IdentityBridgeMiddleware.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="plugins/IdentityBridge/src/Utility/RequestUtils.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="plugins/IdentityBridge/src/ValueObject/RemoteIdentity.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="plugins/IdentityBridge/tests/TestCase/Controller/Component/IdentityBridgeComponentTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="plugins/IdentityBridge/tests/TestCase/Enum/AuthenticationModeTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="plugins/IdentityBridge/tests/TestCase/IdentityBridgePluginTest.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="plugins/IdentityBridge/tests/TestCase/Middleware/IdentityBridgeMiddlewareTest.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="plugins/IdentityBridge/tests/TestCase/Middleware/IdentityBridgeMiddlewareTest.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="plugins/IdentityBridge/tests/TestCase/Middleware/IdentityBridgeMiddlewareTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="plugins/IdentityBridge/tests/TestCase/Middleware/IdentityBridgeMiddlewareTest.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="plugins/IdentityBridge/tests/TestCase/Provider/AppwriteProviderTest.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="plugins/IdentityBridge/tests/TestCase/Provider/AppwriteProviderTest.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="plugins/IdentityBridge/tests/TestCase/Service/IdentityAuthenticatorTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="plugins/IdentityBridge/tests/TestCase/Service/IdentityAuthenticatorTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="plugins/IdentityBridge/tests/TestCase/Utility/RequestUtilsTest.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="plugins/IdentityBridge/tests/TestCase/ValueObject/AuthenticatedRequestIdentityTest.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Action/AuthorizedDeleteAction.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Action/AuthorizedDeleteAction.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Action/AuthorizedEditAction.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Action/AuthorizedIndexAction.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Action/AuthorizedViewAction.php"/>
+  <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="src/Application.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Application.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Application.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Console/Installer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Console/Installer.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Console/Installer.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Console/Installer.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Controller/ErrorController.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Controller/PagesController.php"/>
+  <violation rule="PHPMD\Rule\Design\WeightedMethodCount" file="src/Model/Behavior/ActivityLogBehavior.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Behavior/ActivityLogBehavior.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/Model/Behavior/ActivityLogBehavior.php" method="afterSave"/>
+  <violation rule="PHPMD\Rule\Design\NpathComplexity" file="src/Model/Behavior/ActivityLogBehavior.php" method="afterSave"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Behavior/IssueLifecycleBehavior.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Behavior/LastAdminProtectionBehavior.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Behavior/ProjectSeedingBehavior.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Behavior/WikiLinkSyncBehavior.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Behavior/WikiRevisionBehavior.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Table/ActivityLogTable.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Table/AttachmentLinksTable.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Table/IssuesTable.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Model/Table/IssuesTable.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Model/Table/WikiPagesTable.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Model/Table/WikiPagesTable.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Policy/ProjectPolicy.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="tests/Support/Auth/TestAuthorizationIdentity.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="tests/TestCase/ApplicationTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="tests/TestCase/Controller/PagesControllerTest.php"/>
+  <violation rule="PHPMD\Rule\Design\ExitExpression" file="tests/client-test.php"/>
+</phpmd-baseline>

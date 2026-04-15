@@ -1,0 +1,40 @@
+{
+    "config": {
+        "verbosity": "normal",
+        "ansi": true,
+        "run-mode": "local",
+        "run-exec": ""
+    },
+    "pre-commit": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "vendor/bin/phpcs --colors -p {$STAGED_FILES|of-type:php}",
+                "conditions": [
+                    {
+                        "exec": "CaptainHook.FileStaged.OfType",
+                        "args": [
+                            "php"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "commit-msg": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "php bin/validate-commit-message.php {$FILE}"
+            }
+        ]
+    },
+    "pre-push": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "composer push-check"
+            }
+        ]
+    }
+}
