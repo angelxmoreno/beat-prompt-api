@@ -9,7 +9,7 @@
         "appwrite/appwrite": "^22.0",
         "cakephp/authorization": "^3.5",
         "cakephp/cakephp": "^5.3.0",
-        "cakephp/migrations": "^4.0.0",
+        "cakephp/migrations": "^5.1.0",
         "cakephp/plugin-installer": "^2.0",
         "friendsofcake/crud": "^7.2",
         "josegonzalez/dotenv": "^4.0",
