@@ -79,11 +79,8 @@ return function (RouteBuilder $routes): void {
     });
 
     $routes->prefix('Api', ['path' => '/api'], function (RouteBuilder $builder): void {
-        $builder->connect('/identity/me', [
-            'controller' => 'Identity',
-            'action' => 'me',
-            '_method' => 'GET',
-        ]);
+        // API routes will be added here (e.g. POST /optimize)
+        $builder->fallbacks();
     });
 
     /*

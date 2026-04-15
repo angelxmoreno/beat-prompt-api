@@ -12,8 +12,6 @@ use Crud\Controller\ControllerTrait;
  *
  * Crud is loaded here so HTTP API controllers can use mapped Crud actions
  * without affecting CLI tooling or non-API controllers.
- *
- * @property \IdentityBridge\Controller\Component\IdentityBridgeComponent $IdentityBridge
  */
 class AppController extends BaseAppController
 {
@@ -29,7 +27,6 @@ class AppController extends BaseAppController
 
         $this->setRequest($this->getRequest()->withParam('_ext', 'json'));
         $this->viewBuilder()->setClassName(JsonView::class);
-        $this->loadComponent('IdentityBridge.IdentityBridge');
 
         $this->loadComponent('Crud.Crud', [
             'actions' => [

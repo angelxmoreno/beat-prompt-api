@@ -12,5 +12,4 @@ return [
         'onlyCli' => true,
     ],
     'Crud' => [],
-    'IdentityBridge' => [],
 ];
