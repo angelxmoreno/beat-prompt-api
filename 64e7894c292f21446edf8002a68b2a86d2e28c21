@@ -1,0 +1,33 @@
+tickets/TICKET-004-phase-2-prompt-synthesis.md
+  6d1f3fdf388eae8c 1-13
+tickets/TICKET-006-api-optimize-endpoint.md
+  6d1f3fdf388eae8c 1-30
+tickets/TICKET-005-phase-3-policy-cleaner.md
+  6d1f3fdf388eae8c 1-13
+tickets/TICKET-002-phase-0-canonicalization.md
+  6d1f3fdf388eae8c 1-15
+tickets/TICKET-003-phase-1-style-extraction.md
+  6d1f3fdf388eae8c 1-13
+tickets/TICKET-001-setup-cache-layer.md
+  6d1f3fdf388eae8c 1-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "64e7894c292f21446edf8002a68b2a86d2e28c21",
+  "prompts": {
+    "6d1f3fdf388eae8c": {
+      "agent_id": {
+        "tool": "gemini",
+        "id": "d14d13cc-57de-40b7-b5b8-3acca5a6dead",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "human_author": "Angel S. Moreno",
+      "messages": [],
+      "total_additions": 106,
+      "total_deletions": 19,
+      "accepted_lines": 105,
+      "overriden_lines": 0
+    }
+  }
+}
