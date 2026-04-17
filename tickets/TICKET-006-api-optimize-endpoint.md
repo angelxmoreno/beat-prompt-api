@@ -10,6 +10,7 @@ Expose the primary API endpoint for the MVP. The `POST /optimize` route will rec
 - [ ] Implement request validation (e.g., requiring `text` string, optional `instrumentalOnly` boolean, optional explicit BPM input if supported later).
 - [ ] Return the required JSON response structure containing: `input`, `normalized`, `canonicalKey`, `style` (attributes), and the final `prompt`.
 - [ ] Ensure the response shape uses a single `tempoBpm` scalar in `style` rather than a BPM range.
+- [ ] Ensure all LLM-backed phases in the pipeline call through `CakeInstructor` (no direct provider/Instructor SDK calls from controller or pipeline facade).
 
 ## Example Request
 ```json
