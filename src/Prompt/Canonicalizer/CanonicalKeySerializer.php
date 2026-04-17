@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Prompt;
+namespace App\Prompt\Canonicalizer;
 
 /**
  * Deterministically serializes canonical requests to stable cache keys.

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Prompt;
 
-use App\Prompt\CanonicalKeySerializer;
-use App\Prompt\CanonicalRequest;
+use App\Prompt\Canonicalizer\CanonicalKeySerializer;
+use App\Prompt\Canonicalizer\CanonicalRequest;
 use PHPUnit\Framework\TestCase;
 
 final class CanonicalKeySerializerTest extends TestCase

@@ -81,6 +81,10 @@
             "@cs-check",
             "@stan",
             "@md"
+        ],
+        "all-checks": [
+            "@check",
+            "@push-check"
         ]
     }
 }

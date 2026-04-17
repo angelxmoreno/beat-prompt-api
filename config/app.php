@@ -463,4 +463,22 @@ return [
         'errorLevel' => null,
         'fixtureStrategy' => null,
     ],
+    'CakeInstructor' => [
+        'default_connection' => 'ollama:omen',
+        'connections' => [
+            'ollama:omen' => [
+                'driver' => 'ollama',
+                'apiUrl' => 'http://192.168.1.118:11434/v1',
+                'endpoint' => '/chat/completions',
+                'apiKey' => '',
+                'model' => 'gemma4:e2b',
+                'options' => [
+                    'timeout' => 10,
+                ],
+            ],
+        ],
+        'structured' => [
+            'maxRetries' => 5,
+        ],
+    ],
 ];

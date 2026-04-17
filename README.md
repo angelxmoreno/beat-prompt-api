@@ -14,7 +14,7 @@ This repository contains the backend API for the MVP, built with **CakePHP** and
 
 The API processes requests in four phases:
 
-1. **Phase 0 — Canonicalization:** Normalizes user input and resolves aliases to build a deterministic canonical request key.
+1. **Phase 0 — Canonicalization:** Uses an LLM structured extractor to normalize free-form intent into a deterministic canonical request key.
 2. **Phase 1 — Style Extraction:** Infers musical attributes (genre, mood, energy, tempo, instruments) using a high-quality LLM via `instructor-php`.
 3. **Phase 2 — Prompt Synthesis:** Converts the extracted style attributes into a polished, Lyria-safe prompt using a rewrite-oriented model.
 4. **Phase 3 — Policy Cleaner:** Ensures the final prompt contains no real artist names, song titles, or direct references.
@@ -83,3 +83,12 @@ For the MVP, the primary endpoint is:
 - `composer test` - Run the test suite
 - `composer stan` - Run PHPStan static analysis
 - `composer cs-check` - Run CodeSniffer
+- `bin/cake prompt_canonicalize "Joyner Lucas type beat"` - LLM canonicalization test command
+- `bin/cake prompt_canonicalize "a beat with vibes like Joyner Lucas" --format=json` - Emit canonicalization output as JSON
+- `bin/cake prompt_canonicalize "Joyner Lucas type beat" --connection=default` - Use a specific CakeInstructor connection
+
+`prompt_canonicalize` is LLM-only and fails fast if LLM extraction is unavailable or misconfigured.
+
+The JSON output includes `canonical.source`; successful command runs should report `llm`.
+
+Implementation note: `src/Prompt/Canonicalizer/Canonicalizer.php` is the single canonicalization entrypoint.

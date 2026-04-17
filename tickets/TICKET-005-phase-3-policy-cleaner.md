@@ -3,12 +3,16 @@
 ## Description
 Implement Phase 3 of the prompt pipeline: Policy Cleaner. This phase ensures the final prompt is safe for external AI music generators by removing any real artist names, song titles, or policy-violating direct references.
 
+Prompt class convention:
+- Namespace: `App\Prompt\<Feature>\<Class>`
+- Path: `src/Prompt/<Feature>/<Class>.php`
+
 ## Tasks
-- [ ] Create a `Prompt\PolicyCleaner` service.
-- [ ] Implement a rules-based primary pass to strip out phrases like "type beat", "in the style of", and specific artist names identified in Phase 0.
-- [ ] Implement an optional, cheap LLM fallback (through `CakeInstructor`) to rewrite sentences if the rule-based replacement damages the semantic meaning of the prompt.
+- [ ] Create `App\Prompt\PolicyCleaner\PolicyCleaner` (`src/Prompt/PolicyCleaner/PolicyCleaner.php`).
+- [ ] Implement LLM-based policy cleaning via `CakeInstructor` with explicit policy constraints and structured validation feedback.
+- [ ] Apply only minimal structural normalization after cleaning (format/whitespace/shape normalization), with no lexical/rules stripping pipeline.
 - [ ] Ensure the final prompt preserves the intended musical qualities without direct attribution.
 
 ## Acceptance Criteria
 - The final output prompt must never contain the original artist's name or risky phrasing.
-- Any optional LLM fallback in this phase must use `CakeInstructor` as the shared integration layer.
+- This phase must not depend on lexical/rules post-processing; safety/compliance should come from model instructions + constrained output.

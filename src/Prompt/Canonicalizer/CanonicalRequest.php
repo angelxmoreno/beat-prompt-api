@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Prompt;
+namespace App\Prompt\Canonicalizer;
 
 /**
  * Immutable canonical request produced by phase-0 normalization.
@@ -17,6 +17,7 @@ final readonly class CanonicalRequest
         public array $artists,
         public string $target,
         public array $modifiers,
+        public string $source = 'rules',
     ) {
     }
 }
