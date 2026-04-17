@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace CakeInstructor\Factory;
 
+use Cake\Core\Configure;
 use CakeInstructor\Contracts\StructuredOutputFactoryInterface;
 use CakeInstructor\Exception\MissingConfigurationException;
+use Closure;
 use Cognesy\Instructor\Config\StructuredOutputConfig;
 use Cognesy\Instructor\StructuredOutput;
 use Cognesy\Instructor\StructuredOutputRuntime;
@@ -63,9 +65,16 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
     /**
      * @param array<string, mixed>|null $pluginConfig
      */
-    public function __construct(private readonly ?array $pluginConfig = null)
-    {
+    public function __construct(
+        private readonly ?array $pluginConfig = null,
+        ?callable $configReader = null,
+    ) {
+        $this->configReader = $configReader !== null
+            ? Closure::fromCallable($configReader)
+            : null;
     }
+
+    private readonly ?Closure $configReader;
 
     /**
      * @param array<string, mixed> $connectionOverrides
@@ -93,7 +102,7 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
      */
     private function resolveRootConfig(): array
     {
-        $config = $this->pluginConfig ?? $this->loadDefaultConfig();
+        $config = $this->pluginConfig ?? $this->loadRuntimeConfig();
         if ($config === []) {
             throw new MissingConfigurationException('CakeInstructor config is missing.');
         }
@@ -226,14 +235,10 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
     /**
      * @return array<string, mixed>
      */
-    private function loadDefaultConfig(): array
+    private function loadRuntimeConfig(): array
     {
-        $path = dirname(__DIR__, 2) . '/config/cake_instructor.php';
-        if (!is_file($path)) {
-            return [];
-        }
-
-        $config = require $path;
+        $reader = $this->configReader ?? [Configure::class, 'read'];
+        $config = $reader('CakeInstructor', []);
 
         return is_array($config) ? $config : [];
     }

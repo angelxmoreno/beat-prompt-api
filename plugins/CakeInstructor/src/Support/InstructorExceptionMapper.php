@@ -45,7 +45,7 @@ final class InstructorExceptionMapper
             );
         }
 
-        return new ProviderRequestException(
+        return new InstructorIntegrationException(
             message: $this->formatMessage($context, $exception),
             code: (int)$exception->getCode(),
             previous: $exception,
