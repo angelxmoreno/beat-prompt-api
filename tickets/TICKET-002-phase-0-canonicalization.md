@@ -13,3 +13,4 @@ Implement Phase 0 of the prompt pipeline: Canonicalization and intent resolution
 ## Technical Notes
 - This phase must be rules-first, avoiding LLM calls.
 - The canonical cache key will be used to look up results for subsequent phases.
+- This phase should remain independent of `CakeInstructor`; only downstream LLM-backed phases consume the shared `CakeInstructor` integration layer.

@@ -46,3 +46,4 @@ Reviewers and agents should explicitly check:
 - When making structural cleanup changes, update the docs and tests in the same change.
 - Leave short, durable rationale near sensitive boundaries when a rule is easy to accidentally undo.
 - Do not reintroduce removed product behavior without documenting why the template now needs it.
+- Before handing work back, run `composer push-check` at the repository root and fix all violations it reports.
