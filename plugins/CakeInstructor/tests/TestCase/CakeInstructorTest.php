@@ -16,10 +16,12 @@ final class CakeInstructorTest extends TestCase
 {
     public function testExtractorReturnsExtractorContract(): void
     {
-        $extractor = CakeInstructor::extractor(
+        $service = new CakeInstructor();
+        $extractor = $service->createExtractor(
             factory: new class implements StructuredOutputFactoryInterface {
                 public function make(?string $connectionName = null, array $connectionOverrides = [], array $structuredOverrides = []): StructuredOutput
                 {
+                    unset($connectionName, $connectionOverrides, $structuredOverrides);
                     throw new TimeoutException('timeout');
                 }
             },
@@ -32,11 +34,16 @@ final class CakeInstructorTest extends TestCase
     {
         $this->expectException(ProviderRequestException::class);
 
-        CakeInstructor::extract(
-            request: ExtractionRequest::fromPrompt('hello', responseModel: ['type' => 'object']),
+        $service = new CakeInstructor();
+        $service->runExtract(
+            request: new ExtractionRequest(
+                messages: [['role' => 'user', 'content' => 'hello']],
+                responseModel: ['type' => 'object'],
+            ),
             factory: new class implements StructuredOutputFactoryInterface {
                 public function make(?string $connectionName = null, array $connectionOverrides = [], array $structuredOverrides = []): StructuredOutput
                 {
+                    unset($connectionName, $connectionOverrides, $structuredOverrides);
                     throw new TimeoutException('network timeout');
                 }
             },

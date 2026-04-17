@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CakeInstructor\Factory;
 
-use Cake\Core\Configure;
 use CakeInstructor\Contracts\StructuredOutputFactoryInterface;
 use CakeInstructor\Exception\MissingConfigurationException;
 use Cognesy\Instructor\Config\StructuredOutputConfig;
@@ -78,8 +77,8 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
         array $structuredOverrides = [],
     ): StructuredOutput {
         $config = $this->resolveRootConfig();
-        $resolvedConnectionName = $this->resolveConnectionName($connectionName, $config);
-        $connectionConfig = $this->resolveConnectionConfig($resolvedConnectionName, $config, $connectionOverrides);
+        $connName = $this->resolveConnectionName($connectionName, $config);
+        $connectionConfig = $this->resolveConnectionConfig($connName, $config, $connectionOverrides);
 
         $llmConfig = $this->buildLlmConfig($connectionConfig);
         $structuredConfig = $this->buildStructuredConfig($config, $structuredOverrides);
@@ -94,7 +93,7 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
      */
     private function resolveRootConfig(): array
     {
-        $config = $this->pluginConfig ?? (array)Configure::read('CakeInstructor', []);
+        $config = $this->pluginConfig ?? $this->loadDefaultConfig();
         if ($config === []) {
             throw new MissingConfigurationException('CakeInstructor config is missing.');
         }
@@ -148,7 +147,10 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
             $overrides = $connectionConfig;
             unset($overrides['preset'], $overrides['basePath']);
 
-            return LLMConfig::fromPreset($preset, $basePath)->withOverrides($this->filterAllowedLlmConfig($overrides));
+            $fromPreset = [LLMConfig::class, 'fromPreset'];
+            $config = $fromPreset($preset, $basePath);
+
+            return $config->withOverrides($this->filterAllowedLlmConfig($overrides));
         }
 
         $normalized = $this->filterAllowedLlmConfig($connectionConfig);
@@ -156,7 +158,9 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
             throw new MissingConfigurationException('LLM connection requires non-empty driver and model values.');
         }
 
-        return LLMConfig::fromArray($normalized);
+        $fromArray = [LLMConfig::class, 'fromArray'];
+
+        return $fromArray($normalized);
     }
 
     /**
@@ -168,7 +172,9 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
         $base = $this->normalizeStructuredConfig((array)($rootConfig['structured'] ?? []));
         $overrides = $this->normalizeStructuredConfig($structuredOverrides);
 
-        return StructuredOutputConfig::fromArray(array_replace_recursive($base, $overrides));
+        $fromArray = [StructuredOutputConfig::class, 'fromArray'];
+
+        return $fromArray(array_replace_recursive($base, $overrides));
     }
 
     /**
@@ -215,5 +221,20 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
         }
 
         return $filtered;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function loadDefaultConfig(): array
+    {
+        $path = dirname(__DIR__, 2) . '/config/cake_instructor.php';
+        if (!is_file($path)) {
+            return [];
+        }
+
+        $config = require $path;
+
+        return is_array($config) ? $config : [];
     }
 }

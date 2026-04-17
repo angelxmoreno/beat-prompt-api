@@ -15,7 +15,10 @@ final class FakeStructuredExtractorTest extends TestCase
     {
         $fake = new FakeStructuredExtractor(['first', 'second']);
 
-        $request = ExtractionRequest::fromPrompt('hello', responseModel: ['type' => 'object']);
+        $request = new ExtractionRequest(
+            messages: [['role' => 'user', 'content' => 'hello']],
+            responseModel: ['type' => 'object'],
+        );
 
         self::assertSame('first', $fake->extract($request));
         self::assertSame('second', $fake->extract($request));
@@ -28,7 +31,10 @@ final class FakeStructuredExtractorTest extends TestCase
         $fake = new FakeStructuredExtractor();
 
         $this->expectException(InstructorIntegrationException::class);
-        $fake->extract(ExtractionRequest::fromPrompt('hello', responseModel: ['type' => 'object']));
+        $fake->extract(new ExtractionRequest(
+            messages: [['role' => 'user', 'content' => 'hello']],
+            responseModel: ['type' => 'object'],
+        ));
     }
 
     public function testCanQueueThrowable(): void
@@ -38,6 +44,9 @@ final class FakeStructuredExtractorTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('boom');
 
-        $fake->extract(ExtractionRequest::fromPrompt('hello', responseModel: ['type' => 'object']));
+        $fake->extract(new ExtractionRequest(
+            messages: [['role' => 'user', 'content' => 'hello']],
+            responseModel: ['type' => 'object'],
+        ));
     }
 }

@@ -21,6 +21,7 @@ final class InstructorStructuredExtractorTest extends TestCase
         $factory = new class implements StructuredOutputFactoryInterface {
             public function make(?string $connectionName = null, array $connectionOverrides = [], array $structuredOverrides = []): StructuredOutput
             {
+                unset($connectionName, $connectionOverrides, $structuredOverrides);
                 throw new TimeoutException('Request timed out');
             }
         };
@@ -28,7 +29,10 @@ final class InstructorStructuredExtractorTest extends TestCase
         $extractor = new InstructorStructuredExtractor($factory, new InstructorExceptionMapper());
 
         $this->expectException(ProviderRequestException::class);
-        $extractor->extract(ExtractionRequest::fromPrompt('hello', responseModel: ['type' => 'object']));
+        $extractor->extract(new ExtractionRequest(
+            messages: [['role' => 'user', 'content' => 'hello']],
+            responseModel: ['type' => 'object'],
+        ));
     }
 
     public function testMapsSchemaException(): void
@@ -36,6 +40,7 @@ final class InstructorStructuredExtractorTest extends TestCase
         $factory = new class implements StructuredOutputFactoryInterface {
             public function make(?string $connectionName = null, array $connectionOverrides = [], array $structuredOverrides = []): StructuredOutput
             {
+                unset($connectionName, $connectionOverrides, $structuredOverrides);
                 throw new ValidationException('Bad schema', ['field' => 'missing']);
             }
         };
@@ -43,6 +48,9 @@ final class InstructorStructuredExtractorTest extends TestCase
         $extractor = new InstructorStructuredExtractor($factory, new InstructorExceptionMapper());
 
         $this->expectException(ResponseSchemaException::class);
-        $extractor->extract(ExtractionRequest::fromPrompt('hello', responseModel: ['type' => 'object']));
+        $extractor->extract(new ExtractionRequest(
+            messages: [['role' => 'user', 'content' => 'hello']],
+            responseModel: ['type' => 'object'],
+        ));
     }
 }

@@ -15,7 +15,7 @@ final class CakeInstructor
     /**
      * Build a structured extractor with plugin defaults.
      */
-    public static function extractor(
+    public function createExtractor(
         ?string $connectionName = null,
         ?StructuredOutputFactoryInterface $factory = null,
         ?InstructorExceptionMapper $exceptionMapper = null,
@@ -30,16 +30,48 @@ final class CakeInstructor
     /**
      * Extract structured output in one call using plugin defaults.
      */
+    public function runExtract(
+        ExtractionRequest $request,
+        ?string $connectionName = null,
+        ?StructuredOutputFactoryInterface $factory = null,
+        ?InstructorExceptionMapper $exceptionMapper = null,
+    ): mixed {
+        return $this->createExtractor(
+            connectionName: $connectionName,
+            factory: $factory,
+            exceptionMapper: $exceptionMapper,
+        )->extract($request);
+    }
+
+    /**
+     * Build a structured extractor with plugin defaults.
+     */
+    public static function extractor(
+        ?string $connectionName = null,
+        ?StructuredOutputFactoryInterface $factory = null,
+        ?InstructorExceptionMapper $exceptionMapper = null,
+    ): StructuredExtractorInterface {
+        return (new self())->createExtractor(
+            connectionName: $connectionName,
+            factory: $factory,
+            exceptionMapper: $exceptionMapper,
+        );
+    }
+
+    /**
+     * Extract structured output in one call using plugin defaults.
+     */
     public static function extract(
         ExtractionRequest $request,
         ?string $connectionName = null,
         ?StructuredOutputFactoryInterface $factory = null,
         ?InstructorExceptionMapper $exceptionMapper = null,
     ): mixed {
-        return self::extractor(
+        return (new self())->runExtract(
+            request: $request,
             connectionName: $connectionName,
             factory: $factory,
             exceptionMapper: $exceptionMapper,
-        )->extract($request);
+        );
     }
 }

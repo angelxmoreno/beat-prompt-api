@@ -29,11 +29,7 @@ final class InstructorExceptionMapper
             return $exception;
         }
 
-        if (
-            $exception instanceof ValidationException
-            || $exception instanceof DeserializationException
-            || $exception instanceof StructuredOutputRecoveryException
-        ) {
+        if ($this->isSchemaFailure($exception)) {
             return new ResponseSchemaException(
                 message: $this->formatMessage($context, $exception),
                 code: (int)$exception->getCode(),
@@ -41,13 +37,7 @@ final class InstructorExceptionMapper
             );
         }
 
-        if (
-            $exception instanceof TimeoutException
-            || $exception instanceof ConnectionException
-            || $exception instanceof NetworkException
-            || $exception instanceof HttpClientErrorException
-            || $exception instanceof ServerErrorException
-        ) {
+        if ($this->isProviderFailure($exception)) {
             return new ProviderRequestException(
                 message: $this->formatMessage($context, $exception),
                 code: (int)$exception->getCode(),
@@ -73,5 +63,27 @@ final class InstructorExceptionMapper
         }
 
         return $context . ': ' . $message;
+    }
+
+    /**
+     * Determine whether an exception represents schema/validation failure.
+     */
+    private function isSchemaFailure(Throwable $exception): bool
+    {
+        return $exception instanceof ValidationException
+            || $exception instanceof DeserializationException
+            || $exception instanceof StructuredOutputRecoveryException;
+    }
+
+    /**
+     * Determine whether an exception represents provider/network failure.
+     */
+    private function isProviderFailure(Throwable $exception): bool
+    {
+        return $exception instanceof TimeoutException
+            || $exception instanceof ConnectionException
+            || $exception instanceof NetworkException
+            || $exception instanceof HttpClientErrorException
+            || $exception instanceof ServerErrorException;
     }
 }
