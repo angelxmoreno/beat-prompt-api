@@ -6,7 +6,7 @@ Implement Phase 1 of the prompt pipeline: Style Extraction. This phase takes the
 ## Tasks
 - [ ] Create a `Prompt\StyleExtractor` service.
 - [ ] Implement integration with the primary LLM through `CakeInstructor` (`CakeInstructor::extract(...)` or injected `InstructorStructuredExtractor`) to extract musical attributes based on the canonical request (artists, target, modifiers).
-- [ ] Define the structured output schema for extracted attributes (genre, mood, energy, tempoBpm, tempoSource, instruments, rhythm_traits, production_traits).
+- [ ] Define the structured output schema for extracted attributes (genre, mood, energy, tempoBpm, instruments, rhythm_traits, production_traits).
 - [ ] Implement caching for the extracted style profile using the canonical cache key generated in Phase 0 (e.g., under an `artist_profile|...` namespace).
 
 ## Technical Notes

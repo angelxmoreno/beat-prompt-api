@@ -70,7 +70,9 @@ final class StructuredOutputFactory implements StructuredOutputFactoryInterface
         ?callable $configReader = null,
     ) {
         $this->configReader = $configReader !== null
-            ? Closure::fromCallable($configReader)
+            ? function (string $key, mixed $default = null) use ($configReader): mixed {
+                return $configReader($key, $default);
+            }
             : null;
     }
 
