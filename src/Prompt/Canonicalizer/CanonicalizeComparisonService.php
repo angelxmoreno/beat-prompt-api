@@ -121,7 +121,7 @@ final class CanonicalizeComparisonService
      */
     private function compareExpected(array $expected, ?array $actual, ?string $error): array
     {
-        if ($this->hasErrorExpectation($expected)) {
+        if (is_string($expected['errorContains'] ?? null) && $expected['errorContains'] !== '') {
             $expectedFragment = (string)$expected['errorContains'];
             if (is_string($error) && str_contains($error, $expectedFragment)) {
                 return [];
@@ -174,14 +174,6 @@ final class CanonicalizeComparisonService
     }
 
     /**
-     * @param array<string,mixed> $expected
-     */
-    private function hasErrorExpectation(array $expected): bool
-    {
-        return is_string($expected['errorContains'] ?? null) && $expected['errorContains'] !== '';
-    }
-
-    /**
      * @param array<int,mixed> $values
      * @return array<int,string>
      */
@@ -224,9 +216,16 @@ final class CanonicalizeComparisonService
             return $source['payload'];
         }
 
-        $payload = file_get_contents($source['payload']);
+        if (!is_readable($source['payload'])) {
+            throw new InvalidArgumentException(sprintf('Unable to read case file: %s', $source['payload']));
+        }
 
-        return is_string($payload) ? $payload : '';
+        $payload = file_get_contents($source['payload']);
+        if ($payload === false) {
+            throw new InvalidArgumentException(sprintf('Unable to read case file: %s', $source['payload']));
+        }
+
+        return $payload;
     }
 
     /**

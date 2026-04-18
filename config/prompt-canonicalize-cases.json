@@ -75,6 +75,7 @@
       "kind": "general_prompt",
       "artists": [],
       "target": "beat",
+      "modifiers": ["dark", "cinematic", "boom bap"],
       "source": "llm"
     }
   }

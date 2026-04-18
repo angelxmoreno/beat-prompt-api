@@ -9,6 +9,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use JsonException;
 use Throwable;
 
 final class PromptCanonicalizeCommand extends Command
@@ -77,18 +78,26 @@ final class PromptCanonicalizeCommand extends Command
         }
 
         if ($format === 'json') {
-            $consoleIo->out((string)json_encode([
-                'input' => $input,
-                'mode' => 'llm',
-                'canonical' => [
-                    'kind' => $request->kind,
-                    'artists' => $request->artists,
-                    'target' => $request->target,
-                    'modifiers' => $request->modifiers,
-                    'source' => $request->source,
-                ],
-                'canonicalKey' => $key,
-            ], JSON_UNESCAPED_SLASHES));
+            try {
+                $payload = json_encode([
+                    'input' => $input,
+                    'mode' => 'llm',
+                    'canonical' => [
+                        'kind' => $request->kind,
+                        'artists' => $request->artists,
+                        'target' => $request->target,
+                        'modifiers' => $request->modifiers,
+                        'source' => $request->source,
+                    ],
+                    'canonicalKey' => $key,
+                ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+            } catch (JsonException $err) {
+                $consoleIo->err('Canonicalization failed: Unable to encode JSON output: ' . $err->getMessage());
+
+                return static::CODE_ERROR;
+            }
+
+            $consoleIo->out($payload);
 
             return static::CODE_SUCCESS;
         }

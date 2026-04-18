@@ -92,6 +92,9 @@ TXT;
     public function canonicalize(string $input): CanonicalRequest
     {
         $normalized = $this->normalizeInput($input);
+        if ($normalized === '') {
+            throw new RuntimeException('Canonicalization failed: Input is empty after normalization.');
+        }
 
         try {
             $raw = $this->extractor()->extract($this->buildLlmReq($normalized));

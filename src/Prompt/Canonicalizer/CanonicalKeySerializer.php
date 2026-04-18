@@ -23,7 +23,7 @@ final class CanonicalKeySerializer
             'kind:%s|artists:%s|target:%s|modifiers:%s',
             $request->kind,
             implode(',', $artists),
-            $request->target,
+            rawurlencode($request->target),
             implode(',', $modifiers),
         );
     }

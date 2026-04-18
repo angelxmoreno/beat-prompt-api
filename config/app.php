@@ -468,7 +468,7 @@ return [
         'connections' => [
             'ollama:gemma4' => [
                 'driver' => 'ollama',
-                'apiUrl' => 'http://192.168.1.118:11434/v1',
+                'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
                 'endpoint' => '/chat/completions',
                 'apiKey' => '',
                 'model' => 'gemma4:e2b',
@@ -478,7 +478,7 @@ return [
             ],
             'ollama:gemma3' => [
                 'driver' => 'ollama',
-                'apiUrl' => 'http://192.168.1.118:11434/v1',
+                'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
                 'endpoint' => '/chat/completions',
                 'apiKey' => '',
                 'model' => 'gemma3:270m',
@@ -488,7 +488,7 @@ return [
             ],
             'ollama:llama3' => [
                 'driver' => 'ollama',
-                'apiUrl' => 'http://192.168.1.118:11434/v1',
+                'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
                 'endpoint' => '/chat/completions',
                 'apiKey' => '',
                 'model' => 'llama3:latest',

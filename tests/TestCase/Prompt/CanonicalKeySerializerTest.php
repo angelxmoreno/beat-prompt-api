@@ -25,4 +25,21 @@ final class CanonicalKeySerializerTest extends TestCase
             $serializer->serialize($request),
         );
     }
+
+    public function testSerializeEscapesTargetDelimiters(): void
+    {
+        $serializer = new CanonicalKeySerializer();
+
+        $request = new CanonicalRequest(
+            kind: 'general_prompt',
+            artists: [],
+            target: 'stem|pack:bundle',
+            modifiers: ['dark'],
+        );
+
+        self::assertSame(
+            'kind:general_prompt|artists:|target:stem%7Cpack%3Abundle|modifiers:dark',
+            $serializer->serialize($request),
+        );
+    }
 }

@@ -86,4 +86,25 @@ final class CanonicalizerLlmTest extends TestCase
 
         self::assertSame('loop pack', $req->target);
     }
+
+    public function testRejectsBlankInputBeforeExtractorCall(): void
+    {
+        $fake = new FakeStructuredExtractor([[
+            'kind' => 'general_prompt',
+            'artists' => [],
+            'target' => 'beat',
+            'modifiers' => [],
+        ]]);
+
+        $canon = new Canonicalizer(extractor: $fake);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Input is empty after normalization');
+
+        try {
+            $canon->canonicalize('   ');
+        } finally {
+            self::assertCount(0, $fake->calls());
+        }
+    }
 }
