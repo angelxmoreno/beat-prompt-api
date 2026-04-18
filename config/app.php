@@ -464,14 +464,34 @@ return [
         'fixtureStrategy' => null,
     ],
     'CakeInstructor' => [
-        'default_connection' => 'ollama:omen',
+        'default_connection' => 'ollama:gemma4',
         'connections' => [
-            'ollama:omen' => [
+            'ollama:gemma4' => [
                 'driver' => 'ollama',
                 'apiUrl' => 'http://192.168.1.118:11434/v1',
                 'endpoint' => '/chat/completions',
                 'apiKey' => '',
                 'model' => 'gemma4:e2b',
+                'options' => [
+                    'timeout' => 10,
+                ],
+            ],
+            'ollama:gemma3' => [
+                'driver' => 'ollama',
+                'apiUrl' => 'http://192.168.1.118:11434/v1',
+                'endpoint' => '/chat/completions',
+                'apiKey' => '',
+                'model' => 'gemma3:270m',
+                'options' => [
+                    'timeout' => 10,
+                ],
+            ],
+            'ollama:llama3' => [
+                'driver' => 'ollama',
+                'apiUrl' => 'http://192.168.1.118:11434/v1',
+                'endpoint' => '/chat/completions',
+                'apiKey' => '',
+                'model' => 'llama3:latest',
                 'options' => [
                     'timeout' => 10,
                 ],

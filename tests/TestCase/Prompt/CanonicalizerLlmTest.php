@@ -41,4 +41,49 @@ final class CanonicalizerLlmTest extends TestCase
 
         $canon->canonicalize('Joyner Lucas type beat');
     }
+
+    public function testKeepsInstrumentalTargetWhenExplicitlyReturned(): void
+    {
+        $fake = new FakeStructuredExtractor([[
+            'kind' => 'artist_style_prompt',
+            'artists' => ['joyner lucas'],
+            'target' => 'instrumental',
+            'modifiers' => [],
+        ]]);
+
+        $canon = new Canonicalizer(extractor: $fake);
+        $req = $canon->canonicalize('give me an instrumental in Joyner Lucas style');
+
+        self::assertSame('instrumental', $req->target);
+    }
+
+    public function testNormalizesArtistPunctuationToCanonicalForm(): void
+    {
+        $fake = new FakeStructuredExtractor([[
+            'kind' => 'artist_style_prompt',
+            'artists' => ['Joyner Lucas', 'J. Cole'],
+            'target' => 'beat',
+            'modifiers' => [],
+        ]]);
+
+        $canon = new Canonicalizer(extractor: $fake);
+        $req = $canon->canonicalize('Joyner Lucas x J. Cole type beat');
+
+        self::assertSame(['joyner lucas', 'j cole'], $req->artists);
+    }
+
+    public function testKeepsLlmTargetWithoutAllowlistFiltering(): void
+    {
+        $fake = new FakeStructuredExtractor([[
+            'kind' => 'general_prompt',
+            'artists' => [],
+            'target' => 'loop pack',
+            'modifiers' => ['dark'],
+        ]]);
+
+        $canon = new Canonicalizer(extractor: $fake);
+        $req = $canon->canonicalize('make a dark loop pack');
+
+        self::assertSame('loop pack', $req->target);
+    }
 }

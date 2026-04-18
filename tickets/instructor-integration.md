@@ -36,6 +36,8 @@ Prompt class convention for integration points:
 - [ ] Create mock response model instances (e.g., a fake `StyleProfile`) to inject during unit tests. This ensures the CI pipeline does not make actual network requests to the LLM provider and remains fast and deterministic.
 - [x] Add negative-path tests for malformed LLM output, missing required fields, timeout/error propagation, and missing env/config values.
 - [ ] Add a non-CI opt-in smoke test for real provider invocation (skipped by default) to validate end-to-end local wiring without making CI flaky/costly.
+- [x] Add compare/eval command pattern for canonicalization (`prompt_canonicalize_compare`) to benchmark provider/model behavior with deterministic fixtures.
+- [ ] Require equivalent compare/eval commands for remaining LLM-backed phases (`StyleExtractor`, `PromptSynthesizer`, `PolicyCleaner`) so connection defaults are selected from measured pass/fail outcomes.
 
 ## Acceptance Criteria
 - `CakeInstructor` is the required shared integration layer for LLM-backed phases.
@@ -45,3 +47,4 @@ Prompt class convention for integration points:
 - Prompt modules follow the output-handling convention: no lexical/rules post-processing reliance; only structural normalization is allowed.
 - Automated tests cover both happy path (with `CakeInstructor` test doubles) and required failure paths, and run without external network calls in CI.
 - Optional real-provider smoke test exists and is disabled by default in CI.
+- Model/provider benchmarking exists via compare/eval commands + fixtures, and is used to validate quality before changing default connections.

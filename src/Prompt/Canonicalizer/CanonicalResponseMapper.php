@@ -10,15 +10,6 @@ use RuntimeException;
  */
 final class CanonicalResponseMapper
 {
-    /** @var array<string, string> */
-    private const array TARGET_ALIASES = [
-        'beats' => 'beat',
-        'instrumental' => 'beat',
-        'instrumentals' => 'beat',
-        'song' => 'song',
-        'songs' => 'song',
-    ];
-
     /** @var array<int, string> */
     private const array KINDS = ['artist_style_prompt', 'general_prompt'];
 
@@ -112,7 +103,7 @@ final class CanonicalResponseMapper
     }
 
     /**
-     * Normalize target and alias values.
+     * Minimal structural normalization for target.
      */
     private function cleanTarget(string $target): string
     {
@@ -122,11 +113,7 @@ final class CanonicalResponseMapper
             return 'beat';
         }
 
-        if (isset(self::TARGET_ALIASES[$target])) {
-            return self::TARGET_ALIASES[$target];
-        }
-
-        return $target === 'song' ? 'song' : 'beat';
+        return $target;
     }
 
     /**

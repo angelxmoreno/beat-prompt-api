@@ -1,0 +1,81 @@
+[
+  {
+    "input": "Joyner Lucas type beat",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": [],
+      "source": "llm"
+    }
+  },
+  {
+    "input": "a Joyner Lucas type beat",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": [],
+      "source": "llm"
+    }
+  },
+  {
+    "input": "a beat like Joyner Lucas",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": [],
+      "source": "llm"
+    }
+  },
+  {
+    "input": "a beat that sounds like Joyner Lucas",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": [],
+      "source": "llm"
+    }
+  },
+  {
+    "input": "a beat with vibes like Joyner Lucas",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": [],
+      "source": "llm"
+    }
+  },
+  {
+    "input": "give me an instrumental in Joyner Lucas style",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "instrumental",
+      "modifiers": [],
+      "source": "llm"
+    }
+  },
+  {
+    "input": "Joyner Lucas x J. Cole type beat",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["j cole", "joyner lucas"],
+      "target": "beat",
+      "modifiers": [],
+      "source": "llm"
+    }
+  },
+  {
+    "input": "dark cinematic 94 bpm boom bap beat",
+    "expected": {
+      "kind": "general_prompt",
+      "artists": [],
+      "target": "beat",
+      "source": "llm"
+    }
+  }
+]

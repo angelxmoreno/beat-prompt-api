@@ -27,9 +27,13 @@ Sanitizes and validates raw extraction output, then maps it to a `CanonicalReque
 
 Responsibilities:
 - Read object/array extraction results safely.
-- Normalize aliases (`beats` -> `beat`, etc.).
+- Apply minimal structural normalization to `target` (lowercase/trim with empty fallback).
 - Enforce valid kinds and cleanup modifiers/artists.
 - Produce final `CanonicalRequest` with `source = llm`.
+
+Canonical normalization details:
+- `artists`: lowercase, punctuation removed (example: `j. cole` -> `j cole`).
+- `target`: LLM-derived intent label; only structural normalization is applied.
 
 ### `CanonicalRequest.php`
 Immutable internal representation of canonical prompt intent.

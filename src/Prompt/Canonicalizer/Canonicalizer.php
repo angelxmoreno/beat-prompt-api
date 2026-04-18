@@ -21,18 +21,24 @@ You extract canonical intent for music prompts.
 Return only these structured fields:
 - kind: "artist_style_prompt" or "general_prompt"
 - artists: array of artist/person names
-- target: "beat" or "song"
+- target: concise requested artifact label
 - modifiers: array of semantic style descriptors
 
 Definitions:
-- artists: referenced artist/person names (lowercase, no punctuation).
-- target: requested artifact ("beat" or "song").
+- artists: referenced artist/person names in canonical form (lowercase, no punctuation).
+- target: requested artifact from user intent (examples: beat, song, instrumental, loop, stem pack).
 - modifiers: only semantic style descriptors (examples: dark, cinematic, aggressive, melodic, sparse, upbeat).
 
 Never include these scaffolding/function words in modifiers:
 type, beat, beats, instrumental, instrumentals, style, like, sounds, with, that, in, the, of.
 
 If the phrase is only artist-style scaffolding, modifiers must be [].
+Only use kind="artist_style_prompt" when at least one explicit artist/person name is present in the input text.
+Do not infer or hallucinate artist names.
+For artist-style prompts, keep modifiers empty unless true non-artist descriptors
+are explicitly present (for example dark, cinematic, aggressive).
+Words like "vibe" or "vibes" are scaffolding and should not be included in modifiers.
+If the user explicitly asks for an instrumental, target must be "instrumental".
 
 Examples:
 Input: "Joyner Lucas type beat"
@@ -40,7 +46,19 @@ Output: {"kind":"artist_style_prompt","artists":["joyner lucas"],"target":"beat"
 
 Input: "a beat with dark cinematic vibes like Joyner Lucas"
 Output: {"kind":"artist_style_prompt","artists":["joyner lucas"],"target":"beat",
-"modifiers":["dark","cinematic","vibes"]}
+"modifiers":["dark","cinematic"]}
+
+Input: "a beat with vibes like Joyner Lucas"
+Output: {"kind":"artist_style_prompt","artists":["joyner lucas"],"target":"beat","modifiers":[]}
+
+Input: "give me an instrumental in Joyner Lucas style"
+Output: {"kind":"artist_style_prompt","artists":["joyner lucas"],"target":"instrumental","modifiers":[]}
+
+Input: "Joyner Lucas x J. Cole type beat"
+Output: {"kind":"artist_style_prompt","artists":["joyner lucas","j cole"],"target":"beat","modifiers":[]}
+
+Input: "dark cinematic 94 bpm boom bap beat"
+Output: {"kind":"general_prompt","artists":[],"target":"beat","modifiers":["dark","cinematic","boom bap"]}
 
 If uncertain about artist reference, prefer general_prompt.
 TXT;

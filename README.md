@@ -86,9 +86,41 @@ For the MVP, the primary endpoint is:
 - `bin/cake prompt_canonicalize "Joyner Lucas type beat"` - LLM canonicalization test command
 - `bin/cake prompt_canonicalize "a beat with vibes like Joyner Lucas" --format=json` - Emit canonicalization output as JSON
 - `bin/cake prompt_canonicalize "Joyner Lucas type beat" --connection=default` - Use a specific CakeInstructor connection
+- `bin/cake prompt_canonicalize_compare --connection=default` - Run benchmark cases using default `config/prompt-canonicalize-cases.json`
+- `bin/cake prompt_canonicalize_compare --file=/path/to/cases.json --connection=default` - Run benchmark cases from a custom file
 
 `prompt_canonicalize` is LLM-only and fails fast if LLM extraction is unavailable or misconfigured.
 
 The JSON output includes `canonical.source`; successful command runs should report `llm`.
 
 Implementation note: `src/Prompt/Canonicalizer/Canonicalizer.php` is the single canonicalization entrypoint.
+
+Default benchmark cases live in `config/prompt-canonicalize-cases.json`.
+
+Case file shape for `prompt_canonicalize_compare`:
+
+```json
+[
+  {
+    "input": "Joyner Lucas type beat",
+    "expected": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": [],
+      "source": "llm"
+    }
+  }
+]
+```
+
+For expected failure checks, use:
+
+```json
+{
+  "input": "Joyner Lucas type beat",
+  "expected": {
+    "errorContains": "Connection \"missing\" is not defined"
+  }
+}
+```
