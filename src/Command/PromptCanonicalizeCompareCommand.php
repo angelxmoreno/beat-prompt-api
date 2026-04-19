@@ -125,6 +125,10 @@ final class PromptCanonicalizeCompareCommand extends Command
 
             if (is_array($item['error'])) {
                 $message = (string)($item['error']['message'] ?? '');
+                $class = (string)($item['error']['class'] ?? '');
+                if ($class !== '') {
+                    $consoleIo->out('  - errorClass: ' . $class);
+                }
                 if ($message !== '') {
                     $consoleIo->out('  - error: ' . $message);
                 }

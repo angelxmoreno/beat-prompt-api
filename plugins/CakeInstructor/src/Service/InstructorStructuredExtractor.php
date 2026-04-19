@@ -39,7 +39,10 @@ final class InstructorStructuredExtractor implements StructuredExtractorInterfac
                 options: $request->options,
             )->get();
         } catch (Throwable $exception) {
-            throw $this->exceptionMapper->map($exception, 'Structured extraction failed');
+            $conn = $this->connectionName ?? 'default';
+            $context = sprintf('Structured extraction failed (connection: %s)', $conn);
+
+            throw $this->exceptionMapper->map($exception, $context);
         }
     }
 }
