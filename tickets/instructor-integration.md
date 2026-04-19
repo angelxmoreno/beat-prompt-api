@@ -17,7 +17,7 @@ Prompt class convention for integration points:
 - [x] Ensure any necessary HTTP client dependencies (like Guzzle) are present if not already installed by the package.
 
 ### 2. Configuration & Environment
-- [x] Add placeholder keys (never real secrets) to `sample.env` and document required `CAKE_INSTRUCTOR_*` variables (driver, API key, model, timeout, retry count).
+- [x] Document app-owned provider env vars in `sample.env` and remove plugin-owned `CAKE_INSTRUCTOR_*` runtime connection vars to keep env resolution in application config.
 - [ ] Add real API keys only in local `.env` (gitignored) and confirm no secrets are committed.
 - [x] Ensure the CakePHP `CakeInstructor` config block is sourced from environment variables and supports default-connection swapping.
 
@@ -42,9 +42,10 @@ Prompt class convention for integration points:
 ## Acceptance Criteria
 - `CakeInstructor` is the required shared integration layer for LLM-backed phases.
 - `sample.env` contains placeholders and documentation only; real keys are read from local `.env` and are not committed.
-- `CakeInstructor` configuration is loaded from env (`CAKE_INSTRUCTOR_*`) and supports default connection overrides.
+- `CakeInstructor` runtime reads `Configure('CakeInstructor')`; application config owns env resolution and may use `CakeInstructor\Config\Connections` helpers to build valid provider connections.
 - `App\Prompt\StyleExtractor\StyleExtractor` returns a strongly-typed `StyleProfile` on success and throws domain-level exceptions for provider timeout/error, invalid structured output, and missing config.
 - Prompt modules follow the output-handling convention: no lexical/rules post-processing reliance; only structural normalization is allowed.
+- Prompt modules remain stateless (no prompt-layer caching). If caching is needed, implement it at pipeline/application orchestration boundaries.
 - Automated tests cover both happy path (with `CakeInstructor` test doubles) and required failure paths, and run without external network calls in CI.
 - Optional real-provider smoke test exists and is disabled by default in CI.
 - Model/provider benchmarking exists via compare/eval commands + fixtures, and is used to validate quality before changing default connections.

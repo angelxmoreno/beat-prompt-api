@@ -13,8 +13,10 @@ Prompt class convention:
 - [ ] Apply only minimal structural normalization after cleaning (format/whitespace/shape normalization), with no lexical/rules stripping pipeline.
 - [ ] Ensure the final prompt preserves the intended musical qualities without direct attribution.
 - [ ] Add a policy-cleaner compare/eval command (for example `prompt_policy_clean_compare`) with pass/fail fixtures for safety/compliance outputs across providers/models.
+- [ ] Keep `App\Prompt\PolicyCleaner\PolicyCleaner` stateless (no prompt-layer caching).
 
 ## Acceptance Criteria
 - The final output prompt must never contain the original artist's name or risky phrasing.
 - This phase must not depend on lexical/rules post-processing; safety/compliance should come from model instructions + constrained output.
 - Benchmark fixtures and compare command output must make provider/model quality visible before changing default deployment connection.
+- Any future caching must be added outside prompt modules at pipeline/application orchestration boundaries.

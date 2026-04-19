@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Prompt\Canonicalizer\CanonicalizeComparisonService;
-use App\Prompt\Canonicalizer\Canonicalizer;
 use App\Prompt\Canonicalizer\CanonicalKeySerializer;
+use App\Prompt\StyleExtractor\StyleExtractComparisonService;
+use App\Prompt\StyleExtractor\StyleExtractor;
 use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
@@ -13,18 +13,18 @@ use Cake\Console\ConsoleOptionParser;
 use Throwable;
 
 /**
- * Compare canonicalizer output against expected results across multiple cases.
+ * Compare style extraction output against expected results across benchmark cases.
  */
-final class PromptCanonicalizeCompareCommand extends Command
+final class PromptStyleExtractCompareCommand extends Command
 {
-    private const string DEFAULT_CASES_FILE = ROOT . DS . 'config' . DS . 'prompt-canonicalize-cases.json';
+    private const string DEFAULT_CASES_FILE = ROOT . DS . 'config' . DS . 'prompt-style-extract-cases.json';
 
     /**
      * @inheritDoc
      */
     public static function getDescription(): string
     {
-        return 'Run canonicalization comparison cases to benchmark connection/model quality.';
+        return 'Run style-extraction comparison cases to benchmark connection/model quality.';
     }
 
     /**
@@ -33,12 +33,13 @@ final class PromptCanonicalizeCompareCommand extends Command
     protected function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         $parser->addOption('cases-json', [
-            'help' => 'Inline JSON array of cases.',
+            'help' => 'Inline JSON array of style extraction cases.',
             'default' => null,
         ]);
 
         $parser->addOption('file', [
-            'help' => 'Path to JSON file containing cases array. Defaults to config/prompt-canonicalize-cases.json.',
+            'help' => 'Path to JSON file containing style extraction cases. Defaults to '
+                . 'config/prompt-style-extract-cases.json.',
             'default' => null,
         ]);
 
@@ -70,10 +71,7 @@ final class PromptCanonicalizeCompareCommand extends Command
         }
 
         try {
-            $cases = $service->loadCases(
-                $inlineCases,
-                $caseFile,
-            );
+            $cases = $service->loadCases($inlineCases, $caseFile);
         } catch (Throwable $err) {
             $consoleIo->err('Case loading failed: ' . $err->getMessage());
 
@@ -83,7 +81,8 @@ final class PromptCanonicalizeCompareCommand extends Command
         $summary = $service->run($cases);
 
         if ($format === 'json') {
-            $consoleIo->out((string)json_encode($summary, JSON_UNESCAPED_SLASHES));
+            $payload = json_encode($summary, JSON_UNESCAPED_SLASHES);
+            $consoleIo->out(is_string($payload) ? $payload : '{}');
 
             return $summary['failed'] === 0 ? static::CODE_SUCCESS : static::CODE_ERROR;
         }
@@ -141,12 +140,12 @@ final class PromptCanonicalizeCompareCommand extends Command
     /**
      * Build comparison service with optional connection override.
      */
-    private function service(mixed $connection): CanonicalizeComparisonService
+    private function service(mixed $connection): StyleExtractComparisonService
     {
         $connectionName = $this->optString($connection);
 
-        return new CanonicalizeComparisonService(
-            new Canonicalizer(connectionName: $connectionName),
+        return new StyleExtractComparisonService(
+            new StyleExtractor(connectionName: $connectionName),
             new CanonicalKeySerializer(),
         );
     }

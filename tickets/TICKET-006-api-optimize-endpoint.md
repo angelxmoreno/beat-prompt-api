@@ -20,6 +20,7 @@ Prompt class convention:
 - [ ] Ensure the response shape uses a single `tempoBpm` scalar in `style` rather than a BPM range.
 - [ ] Ensure all LLM-backed phases in the pipeline call through `CakeInstructor` (no direct provider/Instructor SDK calls from controller or pipeline facade).
 - [ ] Ensure pipeline phases do not rely on lexical/rules post-processing for content correction; only minimal structural normalization is allowed between phase boundaries.
+- [ ] Ensure prompt modules remain stateless with no phase-local caching; if caching is needed, implement it only at pipeline/app orchestration boundaries.
 - [ ] Add endpoint-level evaluation harness command (for example `prompt_pipeline_compare`) that executes fixture inputs end-to-end and reports phase-aware mismatches by connection/model.
 
 ## Example Request

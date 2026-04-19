@@ -8,13 +8,14 @@ This repository contains the backend API for the MVP, built with **CakePHP** and
 
 - **CakePHP 5** - Primary application backend and routing
 - **cognesy/instructor-php** - Guarantee structured, typed data extraction from LLMs
-- **File/Redis Caching** - Environment-driven caching for canonical requests, artist profiles, and final prompts
+- **CakeInstructor** - Shared CakePHP integration layer for provider connections, structured extraction, and diagnostics
+- **Environment-driven caching** - Pipeline/application-level caching where needed; prompt modules themselves remain stateless
 
 ## Pipeline Overview
 
 The API processes requests in four phases:
 
-1. **Phase 0 — Canonicalization:** Uses an LLM structured extractor to normalize free-form intent into a deterministic canonical request key.
+1. **Phase 0 — Canonicalization:** Uses an LLM structured extractor to normalize free-form intent into a deterministic `CanonicalRequest` plus canonical key.
 2. **Phase 1 — Style Extraction:** Infers musical attributes (genre, mood, energy, tempo, instruments) using a high-quality LLM via `instructor-php`.
 3. **Phase 2 — Prompt Synthesis:** Converts the extracted style attributes into a polished, Lyria-safe prompt using a rewrite-oriented model.
 4. **Phase 3 — Policy Cleaner:** Ensures the final prompt contains no real artist names, song titles, or direct references.
@@ -71,7 +72,7 @@ For the MVP, the primary endpoint is:
     "genre": "lyrical hip-hop / modern boom bap",
     "mood": ["dark", "intense", "cinematic"],
     "energy": "high",
-    "tempo": "92-98 BPM",
+    "tempoBpm": 94,
     "instruments": ["piano", "strings", "hard drums", "bass"]
   },
   "prompt": "Dark cinematic lyrical hip-hop instrumental with hard boom-bap drums, tense piano melodies, dramatic strings, punchy bass, and focused storytelling energy. 94 BPM. No vocals."
@@ -88,12 +89,15 @@ For the MVP, the primary endpoint is:
 - `bin/cake prompt_canonicalize "Joyner Lucas type beat" --connection=default` - Use a specific CakeInstructor connection
 - `bin/cake prompt_canonicalize_compare --connection=default` - Run benchmark cases using default `config/prompt-canonicalize-cases.json`
 - `bin/cake prompt_canonicalize_compare --file=/path/to/cases.json --connection=default` - Run benchmark cases from a custom file
+- `bin/cake instructor_connection_probe --connection=anthropic:default` - Probe a connection and classify config/provider/schema failures with actionable hints
+- `bin/cake prompt_style_extract_compare --connection=default` - Run style extraction benchmark cases using default `config/prompt-style-extract-cases.json`
+- `bin/cake prompt_style_extract_compare --file=/path/to/cases.json --connection=default` - Run style extraction benchmark cases from a custom file
 
 `prompt_canonicalize` is LLM-only and fails fast if LLM extraction is unavailable or misconfigured.
 
 The JSON output includes `canonical.source`; successful command runs should report `llm`.
 
-Implementation note: `src/Prompt/Canonicalizer/Canonicalizer.php` is the single canonicalization entrypoint.
+Implementation note: [`src/Prompt/Canonicalizer/Canonicalizer.php`](src/Prompt/Canonicalizer/Canonicalizer.php) is the single canonicalization entrypoint used by application layers.
 
 Default benchmark cases live in `config/prompt-canonicalize-cases.json`.
 
@@ -123,4 +127,29 @@ For expected failure checks, use:
     "errorContains": "Connection \"missing\" is not defined"
   }
 }
+```
+
+Style extraction benchmark case shape for `prompt_style_extract_compare`:
+
+```json
+[
+  {
+    "canonical": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": []
+    },
+    "expected": {
+      "genre": "lyrical hip-hop",
+      "mood": ["dark", "intense"],
+      "energy": "high",
+      "tempoBpm": 94,
+      "instruments": ["piano", "drums", "bass"],
+      "rhythmTraits": ["boom bap", "hard-hitting"],
+      "productionTraits": ["punchy", "cinematic"],
+      "source": "llm"
+    }
+  }
+]
 ```

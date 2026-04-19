@@ -5,6 +5,7 @@ use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
+use CakeInstructor\Config\Connections;
 use function Cake\Core\env;
 
 return [
@@ -466,36 +467,45 @@ return [
     'CakeInstructor' => [
         'default_connection' => 'ollama:gemma4',
         'connections' => [
-            'ollama:gemma4' => [
-                'driver' => 'ollama',
-                'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
-                'endpoint' => '/chat/completions',
-                'apiKey' => '',
-                'model' => 'gemma4:e2b',
-                'options' => [
-                    'timeout' => 10,
+            'ollama:gemma4' => Connections::ollama(
+                model: 'gemma4:e2b',
+                overrides: [
+                    'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
                 ],
-            ],
-            'ollama:gemma3' => [
-                'driver' => 'ollama',
-                'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
-                'endpoint' => '/chat/completions',
-                'apiKey' => '',
-                'model' => 'gemma3:270m',
-                'options' => [
-                    'timeout' => 10,
+            ),
+            'ollama:gemma3' => Connections::ollama(
+                model: 'gemma3:270m',
+                overrides: [
+                    'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
                 ],
-            ],
-            'ollama:llama3' => [
-                'driver' => 'ollama',
-                'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
-                'endpoint' => '/chat/completions',
-                'apiKey' => '',
-                'model' => 'llama3:latest',
-                'options' => [
-                    'timeout' => 10,
+            ),
+            'ollama:llama3' => Connections::ollama(
+                model: 'llama3:latest',
+                overrides: [
+                    'apiUrl' => env('OLLAMA_API_URL', 'http://127.0.0.1:11434/v1'),
                 ],
-            ],
+            ),
+            'gemini:default' => Connections::gemini(
+                apiKey: env('GEMINI_API_KEY', ''),
+                model: env('GEMINI_MODEL', 'gemini-2.0-flash'),
+                overrides: [
+                    'apiUrl' => env('GEMINI_API_URL', 'https://generativelanguage.googleapis.com/v1beta'),
+                ],
+            ),
+            'openai:default' => Connections::openaiChat(
+                apiKey: env('OPENAI_API_KEY', ''),
+                model: env('OPENAI_MODEL', 'gpt-4.1'),
+                overrides: [
+                    'apiUrl' => env('OPENAI_API_URL', 'https://api.openai.com/v1'),
+                ],
+            ),
+            'anthropic:default' => Connections::anthropic(
+                apiKey: env('ANTHROPIC_API_KEY', ''),
+                model: env('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001'),
+                overrides: [
+                    'apiUrl' => env('ANTHROPIC_API_URL', 'https://api.anthropic.com/v1'),
+                ],
+            ),
         ],
         'structured' => [
             'maxRetries' => 5,

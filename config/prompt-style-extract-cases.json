@@ -1,0 +1,38 @@
+[
+  {
+    "canonical": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": []
+    },
+    "expected": {
+      "genre": "lyrical hip-hop",
+      "mood": ["dark", "intense"],
+      "energy": "high",
+      "tempoBpm": 94,
+      "instruments": ["piano", "drums", "bass"],
+      "rhythmTraits": ["boom bap", "hard-hitting"],
+      "productionTraits": ["punchy", "cinematic"],
+      "source": "llm"
+    }
+  },
+  {
+    "canonical": {
+      "kind": "general_prompt",
+      "artists": [],
+      "target": "beat",
+      "modifiers": ["dark", "cinematic", "boom bap"]
+    },
+    "expected": {
+      "genre": "boom bap",
+      "mood": ["dark", "cinematic"],
+      "energy": "medium",
+      "tempoBpm": 92,
+      "instruments": ["drums", "bass", "piano"],
+      "rhythmTraits": ["groovy", "swing"],
+      "productionTraits": ["warm", "gritty"],
+      "source": "llm"
+    }
+  }
+]
