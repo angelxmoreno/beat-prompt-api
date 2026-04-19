@@ -71,6 +71,14 @@ final class InstructorConnectionProbeCommand extends Command
         if ($connection === null) {
             $connection = $this->chooseConnection($consoleIo);
         }
+        if ($connection === null) {
+            $consoleIo->err(
+                'No CakeInstructor connections are configured. '
+                . 'Add connections under CakeInstructor in config/app.php.',
+            );
+
+            return static::CODE_ERROR;
+        }
         $summary = $debug
             ? $this->probeService->probeSummaryWithDebug($connection)
             : $this->probeService->probeSummary($connection);
@@ -117,10 +125,13 @@ final class InstructorConnectionProbeCommand extends Command
     /**
      * Interactively choose a configured connection when no option is provided.
      */
-    private function chooseConnection(ConsoleIo $consoleIo): string
+    private function chooseConnection(ConsoleIo $consoleIo): ?string
     {
         $default = $this->probeService->defaultConnection();
         $connections = $this->probeService->availableConnections();
+        if ($connections === []) {
+            return null;
+        }
 
         $consoleIo->out('Available CakeInstructor connections:');
         foreach ($connections as $name) {

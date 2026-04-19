@@ -97,7 +97,7 @@ For the MVP, the primary endpoint is:
 
 The JSON output includes `canonical.source`; successful command runs should report `llm`.
 
-Implementation note: [`src/Prompt/Canonicalizer/Canonicalizer.php`](/Users/amoreno/Projects/BeatPrompt/beat-prompt-api/src/Prompt/Canonicalizer/Canonicalizer.php) is the single canonicalization entrypoint used by application layers.
+Implementation note: [`src/Prompt/Canonicalizer/Canonicalizer.php`](src/Prompt/Canonicalizer/Canonicalizer.php) is the single canonicalization entrypoint used by application layers.
 
 Default benchmark cases live in `config/prompt-canonicalize-cases.json`.
 

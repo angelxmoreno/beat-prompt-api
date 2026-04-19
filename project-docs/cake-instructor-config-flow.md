@@ -5,16 +5,16 @@ This project keeps `CakeInstructor` configuration ownership in the application l
 ## Source Of Truth
 
 - Runtime code reads `Configure::read('CakeInstructor')`.
-- Application config in [`config/app.php`](/Users/amoreno/Projects/BeatPrompt/beat-prompt-api/config/app.php) builds that structure.
+- Application config in [`config/app.php`](../config/app.php) builds that structure.
 - Environment variables are resolved in app config, not inside `CakeInstructor` runtime services.
 
 ## Runtime Path
 
 1. Cake loads `.env` and config files.
-2. [`config/app.php`](/Users/amoreno/Projects/BeatPrompt/beat-prompt-api/config/app.php) resolves env values.
-3. App config builds named connections with [`Connections.php`](/Users/amoreno/Projects/BeatPrompt/beat-prompt-api/plugins/CakeInstructor/src/Config/Connections.php).
-4. `CakeInstructor` runtime reads `Configure('CakeInstructor')`.
-5. [`StructuredOutputFactory.php`](/Users/amoreno/Projects/BeatPrompt/beat-prompt-api/plugins/CakeInstructor/src/Factory/StructuredOutputFactory.php) converts the selected connection into `LLMConfig`.
+2. [`config/app.php`](../config/app.php) resolves env values.
+3. App config builds named connections with [`Connections.php`](../plugins/CakeInstructor/src/Config/Connections.php).
+4. `CakeInstructor` runtime reads `Configure::read('CakeInstructor')`.
+5. [`StructuredOutputFactory.php`](../plugins/CakeInstructor/src/Factory/StructuredOutputFactory.php) converts the selected connection into `LLMConfig`.
 
 ## What The Plugin Owns
 
@@ -70,7 +70,7 @@ Use the plugin commands to inspect the resolved configuration and runtime health
 - `bin/cake instructor_connections_validate`
 - `bin/cake instructor_connections_doctor`
 
-These commands operate on the resolved `Configure('CakeInstructor')` config, not raw env state.
+These commands operate on the resolved `Configure::read('CakeInstructor')` config, not raw env state.
 
 ## Why This Exists
 
