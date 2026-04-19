@@ -11,7 +11,7 @@ Prompt class convention:
 - [ ] Create `App\Prompt\PromptSynthesizer\PromptSynthesizer` (`src/Prompt/PromptSynthesizer/PromptSynthesizer.php`).
 - [ ] Develop prompts/templates to instruct a fast, rewrite-oriented LLM (invoked via `CakeInstructor`) to compose a natural language instrumental prompt from the structured JSON attributes, including a single `tempoBpm` value when present.
 - [ ] Ensure the generated prompt flows naturally and highlights the requested energy, mood, instrumentation, and exact BPM when the backend has one.
-- [ ] Cache the synthesized prompt where appropriate.
+- [ ] Keep `App\Prompt\PromptSynthesizer\PromptSynthesizer` stateless (no prompt-layer caching).
 - [ ] Add a synthesis compare/eval command (for example `prompt_synthesize_compare`) to benchmark prompt quality/output constraints across connections/models using expected fixtures.
 
 ## Technical Notes
@@ -20,3 +20,4 @@ Prompt class convention:
 - Keep LLM integration concerns in `CakeInstructor`; `App\Prompt\PromptSynthesizer\PromptSynthesizer` should depend on the shared integration layer rather than provider-specific SDK calls.
 - Do not rely on lexical/rules post-processing to repair synthesized prompts. If quality/safety constraints are needed, they must be represented in prompt instructions + structured constraints, with only minimal structural normalization applied afterward.
 - Include provider/model benchmark fixtures and mismatch reporting so default model selection is evidence-based.
+- If caching is required in the future, add it at pipeline/app orchestration boundaries, not inside prompt modules.

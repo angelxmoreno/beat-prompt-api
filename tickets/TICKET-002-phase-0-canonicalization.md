@@ -18,6 +18,6 @@ Prompt class convention for this and subsequent tickets:
 
 ## Technical Notes
 - This phase is LLM-first and fail-fast (no rules fallback).
-- The canonical cache key will be used to look up results for subsequent phases.
+- The canonical cache key is an identity primitive for downstream orchestration; prompt-layer classes remain stateless (no prompt-layer caching).
 - This phase consumes `CakeInstructor` directly as the shared integration layer.
 - Evaluation harness for this phase: `bin/cake prompt_canonicalize_compare [--connection=...]`.

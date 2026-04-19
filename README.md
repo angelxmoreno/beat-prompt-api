@@ -88,6 +88,9 @@ For the MVP, the primary endpoint is:
 - `bin/cake prompt_canonicalize "Joyner Lucas type beat" --connection=default` - Use a specific CakeInstructor connection
 - `bin/cake prompt_canonicalize_compare --connection=default` - Run benchmark cases using default `config/prompt-canonicalize-cases.json`
 - `bin/cake prompt_canonicalize_compare --file=/path/to/cases.json --connection=default` - Run benchmark cases from a custom file
+- `bin/cake instructor_connection_probe --connection=anthropic:default` - Probe a connection and classify config/provider/schema failures with actionable hints
+- `bin/cake prompt_style_extract_compare --connection=default` - Run style extraction benchmark cases using default `config/prompt-style-extract-cases.json`
+- `bin/cake prompt_style_extract_compare --file=/path/to/cases.json --connection=default` - Run style extraction benchmark cases from a custom file
 
 `prompt_canonicalize` is LLM-only and fails fast if LLM extraction is unavailable or misconfigured.
 
@@ -123,4 +126,29 @@ For expected failure checks, use:
     "errorContains": "Connection \"missing\" is not defined"
   }
 }
+```
+
+Style extraction benchmark case shape for `prompt_style_extract_compare`:
+
+```json
+[
+  {
+    "canonical": {
+      "kind": "artist_style_prompt",
+      "artists": ["joyner lucas"],
+      "target": "beat",
+      "modifiers": []
+    },
+    "expected": {
+      "genre": "lyrical hip-hop",
+      "mood": ["dark", "intense"],
+      "energy": "high",
+      "tempoBpm": 94,
+      "instruments": ["piano", "drums", "bass"],
+      "rhythmTraits": ["boom bap", "hard-hitting"],
+      "productionTraits": ["punchy", "cinematic"],
+      "source": "llm"
+    }
+  }
+]
 ```
