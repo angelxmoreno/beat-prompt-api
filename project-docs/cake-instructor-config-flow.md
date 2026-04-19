@@ -42,7 +42,7 @@ These builders:
 
 - fill provider defaults like `driver` and `endpoint`
 - accept app-level overrides
-- fail fast on blank required inputs
+- do not fail app boot on blank env values; use the plugin diagnostic commands to validate resolved connections
 
 ## Env Ownership Rule
 
@@ -61,6 +61,16 @@ Example:
 ```
 
 Do not add provider env lookups inside `CakeInstructor` runtime classes.
+
+## Diagnostics
+
+Use the plugin commands to inspect the resolved configuration and runtime health of connections:
+
+- `bin/cake instructor_connection_probe`
+- `bin/cake instructor_connections_validate`
+- `bin/cake instructor_connections_doctor`
+
+These commands operate on the resolved `Configure('CakeInstructor')` config, not raw env state.
 
 ## Why This Exists
 
